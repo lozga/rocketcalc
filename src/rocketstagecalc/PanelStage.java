@@ -23,4 +23,5 @@ public class PanelStage {
     public JLabel labelFullMass = new JLabel();
     public JLabel labelEmptyMass = new JLabel();
     public JLabel labelBurnTime = new JLabel();
+    public JLabel labelStartingTWR = new JLabel();
 }

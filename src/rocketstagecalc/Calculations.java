@@ -26,6 +26,7 @@ public class Calculations {
     static int[] iFullMass = new int[5];
     static int[] iEmptyMass = new int[5];
     static int[] iBurnTime = new int[5];
+    static double[] dTWR = new double[5];
     static int iPN;
     static double[] deltaV = new double[5];
 
@@ -90,6 +91,14 @@ public class Calculations {
                 iEmptyMass[i] = (int) (iEngineMass[i] * iEngineQuantity[i] + iParasiteMass[i]);
                 iFullMass[i] = iEmptyMass[i] + iFuelMass[i];
                 iBurnTime[i] = (int) (iFuelMass[i] / (iEngineFuelUsage[i] * iEngineQuantity[i]));
+                int higherMass = iPN;
+                int stages = Integer.parseInt(spinnerStages.getValue().toString());
+                if (1 < stages) {
+                    for (int k = 1; k < stages; k++) {
+                        higherMass = higherMass + iFullMass[k];
+                    }
+                }
+                dTWR[i] = ((iEngineQuantity[i] * iEngineThrust[i] * 1000 / ((higherMass + iFullMass[i]) * 9.81)));
             } catch (Exception e) {
             }
         }
@@ -104,6 +113,7 @@ public class Calculations {
             PanelStagesArray.stagesArray[i].labelEmptyMass.setText(Integer.toString(iEmptyMass[i]));
             PanelStagesArray.stagesArray[i].labelFullMass.setText(Integer.toString(iFullMass[i]));
             PanelStagesArray.stagesArray[i].labelBurnTime.setText(Integer.toString(iBurnTime[i]));
+            PanelStagesArray.stagesArray[i].labelStartingTWR.setText(String.format("%.2f", dTWR[i]));
         }
         validateButtons();
         RocketStageCalc.refreshFrame();
@@ -138,7 +148,11 @@ public class Calculations {
                 if (stage == 0) {
                     deltaV[stage] = result;
                 } else {
-                    deltaV[stage] = result - deltaV[stage - 1];
+                    double leftSum=0;
+                    for (int k=0;k<stage;k++){
+                        leftSum=leftSum+deltaV[k];
+                    }
+                    deltaV[stage] = result - leftSum;
                 }
             }
         }
@@ -267,7 +281,7 @@ public class Calculations {
             for (int i = 0; i < stages; i++) {
                 fullFuelMass = fullFuelMass + iFuelMass[i];
             }
-            if (fullFuelMass != 300000) {
+            if (fullFuelMass > 300000) {
                 isPNReady = false;
                 errorText = errorText + "Ограничение на 300 тонн топлива в соревновании";
             }

@@ -4,12 +4,14 @@
  */
 package rocketstagecalc;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,6 +23,7 @@ import javax.swing.JToggleButton;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -91,7 +94,7 @@ public class RocketStageCalc {
         mainPanel.add(panelStages, gbc);
 
         JPanel panelPN = new JPanel(new GridLayout(1, 0));
-        JLabel labelPN = new JLabel("ПН");
+        JLabel labelPN = new JLabel("ПН, кг");
         labelPN.setHorizontalAlignment(JLabel.RIGHT);
         panelStages.add(labelPN);
 
@@ -108,16 +111,14 @@ public class RocketStageCalc {
         buttonLoadDefaults.addActionListener(listenerLoadDefaults);
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.weightx = 1;
-        gbc.gridwidth = 1;
+        gbc.weightx = 2;
         mainPanel.add(buttonLoadDefaults, gbc);
 
         buttonContest = new JToggleButton("Соревнование");
         buttonContest.addActionListener(listenerContest);
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 1;
-        gbc.weightx = 1;
-        gbc.gridwidth = 1;
+        gbc.weightx = 8;
         mainPanel.add(buttonContest, gbc);
 
         panelStagesList = new JPanel(new GridLayout(0, 1));
@@ -138,6 +139,9 @@ public class RocketStageCalc {
 
         panelDeltaV = new JPanel(new GridLayout(1, 0));
         panelDeltaV.add(Calculations.showDeltaV(Integer.parseInt(spinnerStages.getValue().toString())));
+        TitledBorder border = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), "Распределение delta-V по ступеням");
+        border.setTitleJustification(TitledBorder.CENTER);
+        panelDeltaV.setBorder(border);
         panelDeltaV.setVisible(false);
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -184,7 +188,7 @@ public class RocketStageCalc {
             panelDeltaV.removeAll();
             panelDeltaV.add(Calculations.showDeltaV(Integer.parseInt(spinnerStages.getValue().toString())));
             panelDeltaV.setVisible(true);
-            labelResult.setText("Итоговая скорость: " + String.format("%.2f", result));
+            labelResult.setText("<html><b>Итоговая скорость: " + String.format("%.2f", result) + " м/с</b></html>");
             refreshFrame();
         }
     };
@@ -196,7 +200,7 @@ public class RocketStageCalc {
             panelDeltaV.removeAll();
             panelDeltaV.add(Calculations.showDeltaV(Integer.parseInt(spinnerStages.getValue().toString())));
             panelDeltaV.setVisible(true);
-            labelResult.setText("Максимальная ПН для этой конфигурации: " + Integer.toString(PN));
+            labelResult.setText("<html><b>Максимальная ПН для этой конфигурации: " + Integer.toString(PN) + " кг</b></html>");
             refreshFrame();
         }
     };

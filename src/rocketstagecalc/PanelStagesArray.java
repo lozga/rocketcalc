@@ -157,6 +157,16 @@ public class PanelStagesArray {
             gbc.gridx = 1;
             gbc.gridy = 9;
             panelOneStage[i].add(stagesArray[i].labelBurnTime, gbc);
+            
+                        JLabel labelTWR = new JLabel("<html>Начальная тяговооруженность</html>");
+            gbc.weightx = 0;
+            gbc.gridx = 0;
+            gbc.gridy = 10;
+            panelOneStage[i].add(labelTWR, gbc);
+            gbc.weightx = 1;
+            gbc.gridx = 1;
+            gbc.gridy = 10;
+            panelOneStage[i].add(stagesArray[i].labelStartingTWR, gbc);
 
             returnPanel.add(panelOneStage[i]);
         }
