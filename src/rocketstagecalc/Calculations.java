@@ -133,11 +133,11 @@ public class Calculations {
             for (int time = 0; time < iBurnTime[stage]; time++) {
                 int m1 = m0 - iEngineFuelUsage[stage] * iEngineQuantity[stage];
                 double ms = ((m0 + m1) / 2);
-                double Fy = (9.81 * ms - 9.81 * ms * (result / 7900) * 2);
+                double Fy = (1-Math.pow(result/7900,2))*9.81*ms; //(9.81 * ms - 9.81 * ms * (result / 7900) * 2);
                 if (Fy < 0) {
                     Fy = 0;
                 }
-                double Fx = iEngineThrust[stage] * iEngineQuantity[stage] * 1000 - Fy;
+                double Fx = Math.sqrt(Math.pow(iEngineThrust[stage] * iEngineQuantity[stage] * 1000, 2)-Math.pow(Fy, 2));//iEngineThrust[stage] * iEngineQuantity[stage] * 1000 - Fy;
                 if (Fx < 0) {
                     Fx = 0;
                 }
